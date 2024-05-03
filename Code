@@ -27,6 +27,301 @@ class Salesperson(Employee):
         self.sales_target = sales_target
         self.commission_rate = commission_rate
 
+# Client class
+class Client:
+    def __init__(self, client_id, name, address, contact_details, budget):
+        self.client_id = client_id
+        self.name = name
+        self.address = address
+        self.contact_details = contact_details
+        self.budget = budget
+
+# Guest class
+class Guest:
+    def __init__(self, guest_id, name, address, contact_details):
+        self.guest_id = guest_id
+        self.name = name
+        self.address = address
+        self.contact_details = contact_details
+
+# Supplier class
+class Venue:
+    def __init__(self, venue_id, name, address, contact, min_guests, max_guests):
+        self.venue_id = venue_id
+        self.name = name
+        self.address = address
+        self.contact = contact
+        self.min_guests = min_guests
+        self.max_guests = max_guests
+
+class Supplier:
+    def __init__(self, supplier_id, name, address, contact_details, services_offered=None):
+        self.supplier_id = supplier_id
+        self.name = name
+        self.address = address
+        self.contact_details = contact_details
+        self.services_offered = services_offered or []
+
+class Event:
+    def __init__(self, event_id, event_type, theme, date, time, duration, venue, client, suppliers, guest_list=None, invoice=None):
+        self.event_id = event_id
+        self.event_type = event_type
+        self.theme = theme
+        self.date = datetime.strptime(date, '%Y-%m-%d')
+        self.time = time
+        self.duration = duration
+        self.venue = venue
+        self.client = client
+        self.guest_list = guest_list or []
+        self.suppliers = suppliers  # This should be a dictionary of suppliers including catering, cleaning, etc.
+        self.invoice = invoice
+
+class Invoice:
+    def __init__(self, invoice_id, amount, details):
+        self.invoice_id = invoice_id
+        self.amount = amount
+        self.details = details
+
+# To handle catering and other services, extend the Supplier class or modify it to include specific fields:
+class Caterer(Supplier):
+    def __init__(self, supplier_id, name, address, contact_details, menu, min_guests, max_guests, *args, **kwargs):
+        super().__init__(supplier_id, name, address, contact_details, *args, **kwargs)
+        self.menu = menu
+        self.min_guests = min_guests
+        self.max_guests = max_guests
+
+
+# Example function to add an employee
+def add_employee(employee_data):
+    try:
+        with open('employees.pkl', 'ab') as file:
+            pickle.dump(employee_data, file)
+    except Exception as e:
+        print(f"An error occurred while adding an employee: {e}")
+
+# Example function to display employee details by ID
+def display_employee_details(employee_id):
+    try:
+        with open('employees.pkl', 'rb') as file:
+            while True:
+                try:
+                    employee = pickle.load(file)
+                    if employee.id_number == employee_id:
+                        print(f"Employee Name: {employee.name}")
+                        print(f"Department: {employee.department}")
+                        return
+                except EOFError:
+                    break
+        print("Employee not found.")
+    except Exception as e:
+        print(f"An error occurred while retrieving employee details: {e}")
+
+def delete_employee(self):
+    # Example placeholder function
+    pass
+
+def modify_employee(self):
+    # Example placeholder function
+    pass
+
+# Example function to add an event
+def add_event(event_data):
+    try:
+        with open('events.pkl', 'ab') as file:
+            pickle.dump(event_data, file)
+    except Exception as e:
+        print(f"An error occurred while adding an event: {e}")
+
+# Example function to display event details by ID
+def display_event_details(event_id):
+    try:
+        with open('events.pkl', 'rb') as file:
+            while True:
+                try:
+                    event = pickle.load(file)
+                    if event.event_id == event_id:
+                        print(f"Event Type: {event.event_type}")
+                        print(f"Theme: {event.theme}")
+                        return
+                except EOFError:
+                    break
+        print("Event not found.")
+    except Exception as e:
+        print(f"An error occurred while retrieving event details: {e}")
+
+def delete(self, event_id):
+    # Placeholder function
+    pass
+
+def modify(self, event_id, new_data):
+    # Placeholder function
+    pass
+
+# Function to display client details
+def display_client_details(client_id):
+    try:
+        with open('clients.pkl', 'rb') as file:
+            while True:
+                try:
+                    client = pickle.load(file)
+                    if client.client_id == client_id:
+                        print(f"Client Name: {client.name}")
+                        print(f"Client Address: {client.address}")
+                        # Print additional details as required
+                        return
+                except EOFError:
+                    break
+        print("Client not found.")
+    except Exception as e:
+        print(f"An error occurred while retrieving client details: {e}")
+
+def delete(self, client_id):
+    # Placeholder function
+    pass
+
+def modify(self, client_id, new_data):
+    # Placeholder function
+    pass
+# Example functions to add suppliers, guests, and venues
+def add_supplier(supplier_data):
+    try:
+        with open('suppliers.pkl', 'ab') as file:
+            pickle.dump(supplier_data, file)
+    except Exception as e:
+        print(f"An error occurred while adding a supplier: {e}")
+
+def add_guest(guest_data):
+    try:
+        with open('guests.pkl', 'ab') as file:
+            pickle.dump(guest_data, file)
+    except Exception as e:
+        print(f"An error occurred while adding a guest: {e}")
+
+def delete(self, guest_id):
+    # Placeholder function
+    pass
+
+def modify(self, guest_id, new_data):
+    # Placeholder function
+    pass
+
+def add_venue(venue_data):
+    try:
+        with open('venues.pkl', 'wb') as file:
+            pickle.dump(venue_data, file)
+    except FileNotFoundError:
+        print("Error: File 'venues.pkl' not found.")
+    except Exception as e:
+        print(f"An error occurred while adding a venue: {e}")
+
+
+def delete(self, venue_id):
+    # Placeholder function
+    pass
+
+def modify(self, venue_id, new_data):
+    # Placeholder function
+    pass
+
+# Example functions to display details of suppliers, guests, and venues by ID
+def display_supplier_details(supplier_id):
+    try:
+        with open('suppliers.pkl', 'rb') as file:
+            while True:
+                try:
+                    supplier = pickle.load(file)
+                    if supplier.supplier_id == supplier_id:
+                        print(f"Supplier Name: {supplier.name}")
+                        print(f"Supplier Address: {supplier.address}")
+                        # Print additional details as required
+                        return
+                except EOFError:
+                    break
+        print("Supplier not found.")
+    except Exception as e:
+        print(f"An error occurred while retrieving supplier details: {e}")
+
+def delete(self, supplier_id):
+    # Placeholder function
+    pass
+
+def modify(self, supplier_id, new_data):
+    # Placeholder function
+    pass
+
+def display_guest_details(guest_id):
+    try:
+        with open('guests.pkl', 'rb') as file:
+            while True:
+                try:
+                    guest = pickle.load(file)
+                    if guest.guest_id == guest_id:
+                        print(f"Guest Name: {guest.name}")
+                        print(f"Guest Address: {guest.address}")
+                        # Print additional details as required
+                        return
+                except EOFError:
+                    break
+        print("Guest not found.")
+    except Exception as e:
+        print(f"An error occurred while retrieving guest details: {e}")
+
+def display_venue_details(venue_id):
+    try:
+        with open('venues.pkl', 'rb') as file:
+            while True:
+                try:
+                    venue = pickle.load(file)
+                    if venue.venue_id == venue_id:
+                        print(f"Venue Name: {venue.name}")
+                        print(f"Venue Address: {venue.address}")
+                        # Print additional details as required
+                        return
+                except EOFError:
+                    break
+        print("Venue not found.")
+    except Exception as e:
+        print(f"An error occurred while retrieving venue details: {e}")
+
+import pickle
+from datetime import datetime
+
+# Base class for all employees
+class Employee:
+    def __init__(self, name, id_number, department, job_title, basic_salary, age, date_of_birth, passport_details):
+        self.name = name
+        self.id_number = id_number
+        self.department = department
+        self.job_title = job_title
+        self.basic_salary = basic_salary
+        self.age = age
+        self.date_of_birth = date_of_birth
+        self.passport_details = passport_details
+
+# Manager class inheriting from Employee
+
+class Manager(Employee):
+    def __init__(self, team_size, department_budget, manages=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.team_size = team_size
+        self.department_budget = department_budget
+        self.manages = manages or []  # list of employee IDs they manage
+
+    def add_employee(self, employee_id):
+        if employee_id not in self.manages:
+            self.manages.append(employee_id)
+
+    def remove_employee(self, employee_id):
+        self.manages = [emp for emp in self.manages if emp != employee_id]
+
+
+# Salesperson class inheriting from Employee
+class Salesperson(Employee):
+    def __init__(self, sales_target, commission_rate, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.sales_target = sales_target
+        self.commission_rate = commission_rate
+
 # Event class
 class Event:
     def __init__(self, event_id, event_type, theme, date, time, duration):
@@ -117,6 +412,14 @@ def display_employee_details(employee_id):
     except Exception as e:
         print(f"An error occurred while retrieving employee details: {e}")
 
+def delete_employee(self):
+    # Example placeholder function
+    pass
+
+def modify_employee(self):
+    # Example placeholder function
+    pass
+
 # Example function to add an event
 def add_event(event_data):
     try:
@@ -142,6 +445,14 @@ def display_event_details(event_id):
     except Exception as e:
         print(f"An error occurred while retrieving event details: {e}")
 
+def delete(self, event_id):
+    # Placeholder function
+    pass
+
+def modify(self, event_id, new_data):
+    # Placeholder function
+    pass
+
 # Function to display client details
 def display_client_details(client_id):
     try:
@@ -159,6 +470,14 @@ def display_client_details(client_id):
         print("Client not found.")
     except Exception as e:
         print(f"An error occurred while retrieving client details: {e}")
+
+def delete(self, client_id):
+    # Placeholder function
+    pass
+
+def modify(self, client_id, new_data):
+    # Placeholder function
+    pass
 # Example functions to add suppliers, guests, and venues
 def add_supplier(supplier_data):
     try:
@@ -174,30 +493,60 @@ def add_guest(guest_data):
     except Exception as e:
         print(f"An error occurred while adding a guest: {e}")
 
+def delete(self, guest_id):
+    # Placeholder function
+    pass
+
+def modify(self, guest_id, new_data):
+    # Placeholder function
+    pass
+
 def add_venue(venue_data):
     try:
-        with open('venues.pkl', 'ab') as file:
+        with open('venues.pkl', 'wb') as file:
             pickle.dump(venue_data, file)
+    except FileNotFoundError:
+        print("Error: File 'venues.pkl' not found.")
     except Exception as e:
         print(f"An error occurred while adding a venue: {e}")
+
+
+def delete(self, venue_id):
+    # Placeholder function
+    pass
+
+def modify(self, venue_id, new_data):
+    # Placeholder function
+    pass
 
 # Example functions to display details of suppliers, guests, and venues by ID
 def display_supplier_details(supplier_id):
     try:
         with open('suppliers.pkl', 'rb') as file:
-            while True:
-                try:
+            try:
+                while True:
                     supplier = pickle.load(file)
                     if supplier.supplier_id == supplier_id:
                         print(f"Supplier Name: {supplier.name}")
                         print(f"Supplier Address: {supplier.address}")
-                        # Print additional details as required
                         return
-                except EOFError:
-                    break
-        print("Supplier not found.")
+            except EOFError:
+                print("Reached end of file without finding the supplier.")
+            except pickle.UnpicklingError as e:
+                print(f"Error unpickling object: {e}")
+    except FileNotFoundError:
+        print("Supplier file not found.")
     except Exception as e:
         print(f"An error occurred while retrieving supplier details: {e}")
+
+
+def delete(self, supplier_id):
+    # Placeholder function
+    pass
+
+def modify(self, supplier_id, new_data):
+    # Placeholder function
+    pass
 
 def display_guest_details(guest_id):
     try:
@@ -233,84 +582,192 @@ def display_venue_details(venue_id):
     except Exception as e:
         print(f"An error occurred while retrieving venue details: {e}")
 # Test cases
-def run_tests():
-    # Test adding and displaying employee
-    employee = Employee(
-        name="Ahmed Al-Maktoum",
-        id_number="AE234",
-        department="Event Management",
-        job_title="Event Coordinator",
-        basic_salary=75000,
-        age=42,
-        date_of_birth="1980-02-15",
-        passport_details="UAE1234567"
+def test_manager_creation_and_assignment():
+    # Create Managers and assign employees
+    manager_susan = Manager(
+        name="Susan Meyers",
+        id_number="47899",
+        department="Sales",
+        job_title="Manager",
+        basic_salary=37500,
+        age=50,
+        date_of_birth="1972-06-15",
+        passport_details="Pass1234Susan",
+        team_size=3,
+        department_budget=100000,
+        manages=["11234", "98637"]  # Managing Shyam Sundar and Salma J Sam
     )
-    add_employee(employee)
-    display_employee_details(employee.id_number)
 
-    # Test adding and displaying event
-    event = Event(
-        event_id="EV1001",
-        event_type="Wedding",
-        theme="Traditional Emirati",
-        date="2024-12-12",
-        time="17:00",
-        duration=5.0
+    manager_joy = Manager(
+        name="Joy Rogers",
+        id_number="81774",
+        department="Sales",
+        job_title="Manager",
+        basic_salary=24000,
+        age=45,
+        date_of_birth="1977-03-22",
+        passport_details="Pass1234Joy",
+        team_size=1,
+        department_budget=50000,
+        manages=["98394"]  # Managing Mariam Khalid
     )
-    add_event(event)
-    display_event_details(event.event_id)
 
-    # Test for clients, guests, suppliers, venues can be added here following the same structure...
+    # Check if managers are initialized correctly
+    assert manager_susan.manages == ["11234", "98637"], "Manager Susan should manage Shyam and Salma"
+    assert manager_joy.manages == ["98394"], "Manager Joy should manage Mariam"
+    print("Test Passed: Managers are correctly managing specified employees.")
 
+# Run the test
 if __name__ == "__main__":
-    run_tests()
+    test_manager_creation_and_assignment()
+
+def test_employee():
+    # Add Employee
+    employee = Employee(name="Susan Meyers", id_number="47899", department="Sales", job_title="Manager", basic_salary=37500, age=30, date_of_birth="1990-05-01", passport_details="Pass12345")
+    add_employee(employee)
+    print("Added Employee: Susan Meyers")
+
+    # Display Employee
+    display_employee_details("47899")
+
+    # Modify Employee (Placeholder)
+    def modify_employee():
+        pass  # Implement logic to modify employee details
+
+    # Delete Employee (Placeholder)
+    def delete_employee():
+        pass  # Implement logic to delete employee
+
+test_employee()
+def test_event():
+    # Add Event
+    event = Event(event_id="E1001", event_type="Wedding", theme="Traditional", date="2024-05-20", time="15:00", duration=5)
+    add_event(event)
+    print("Added Event: Wedding")
+
+    # Display Event
+    display_event_details("E1001")
+
+    # Modify Event (Placeholder)
+    def modify_event():
+        pass
+
+    # Delete Event (Placeholder)
+    def delete_event():
+        pass
+
+test_event()
+def test_client():
+    # Add Client
+    client = Client(
+        client_id="C1001",
+        name="Mariam Khalid",
+        address="1234 Street, Dubai",
+        contact_details="0551234567",
+        budget=50000
+    )
+    add_client(client)  # Assuming add_client is similar to add_guest
+    print("Added Client: Mariam Khalid")
+
+    # Display Client
+    display_client_details("C1001")
+def add_client(client_data):
+    try:
+        with open('clients.pkl', 'ab') as file:  # Ensure 'ab' is used for appending binary
+            pickle.dump(client_data, file)
+    except Exception as e:
+        print(f"An error occurred while adding a client: {e}")
+
+# Corrected function to display client details
+def display_client_details(client_id):
+    try:
+        with open('clients.pkl', 'rb') as file:
+            while True:
+                try:
+                    client = pickle.load(file)
+                    if client.client_id == client_id:
+                        print(f"Client Name: {client.name}")
+                        print(f"Client Address: {client.address}")
+                        return
+                except EOFError:
+                    break
+        print("Client not found.")
+    except Exception as e:
+        print(f"An error occurred while retrieving client details: {e}")
+
+
+
+
+# Modify Client (Placeholder)
+def modify_client():
+    pass
+
+# Delete Client (Placeholder)
+def delete_client():
+    pass
+
+# Run the test
+if __name__ == "__main__":
+    test_client()
+def test_supplier():
+    # Add Supplier
+    supplier = Supplier(supplier_id="S1001", name="Al Bayader International", address="Industrial Area, Dubai", contact_details="0567891234")
+    add_supplier(supplier)
+    print("Added Supplier: Al Bayader International")
+
+    # Display Supplier
+    display_supplier_details("S1001")
+
+    # Modify Supplier (Placeholder)
+    def modify_supplier():
+        pass
+
+    # Delete Supplier (Placeholder)
+    def delete_supplier():
+        pass
+
+test_supplier()
+def test_guest():
+    # Add Guest
+    guest = Guest(guest_id="G1001", name="John Doe", address="123 Lane, Abu Dhabi", contact_details="0543216789")
+    add_guest(guest)
+    print("Added Guest: John Doe")
+
+    # Display Guest
+    display_guest_details("G1001")
+
+    # Modify Guest (Placeholder)
+    def modify_guest():
+        pass
+
+    # Delete Guest (Placeholder)
+    def delete_guest():
+        pass
+
+test_guest()
+def test_venue():
+    # Add Venue
+    venue = Venue(venue_id="V1001", name="Jumeirah Beach Hotel", address="Jumeirah Road, Dubai", contact="043678000", min_guests=50, max_guests=500)
+    add_venue(venue)
+    print("Added Venue: Jumeirah Beach Hotel")
+
+    # Display Venue
+    display_venue_details("V1001")
+
+    # Modify Venue (Placeholder)
+    def modify_venue():
+        pass
+
+    # Delete Venue (Placeholder)
+    def delete_venue():
+        pass
+
+test_venue()
+
 
 def test_display_client_details():
     # Assuming a client has been added earlier
     display_client_details("CL001")
     print("Client details displayed successfully.")
 
-# Test cases for suppliers, guests, and venues would follow the same pattern.
 
-# Run tests for all functionalities
-def run_tests():
-    # ... (other tests)
-    # Test adding and displaying supplier
-    supplier = Supplier(
-        supplier_id="SP001",
-        name="Al Bayader International",
-        address="Dubai, UAE",
-        contact_details="0501234567"
-    )
-    add_supplier(supplier)
-    display_supplier_details(supplier.supplier_id)
-
-    # Test adding and displaying guest
-    guest = Guest(
-        guest_id="GS001",
-        name="Sheikh Khalifa",
-        address="Abu Dhabi, UAE",
-        contact_details="0507654321"
-    )
-    add_guest(guest)
-    display_guest_details(guest.guest_id)
-
-    # Test adding and displaying venue
-    venue = Venue(
-        venue_id="VN001",
-        name="Jumeirah Beach Hotel",
-        address="Jumeirah Road, Dubai",
-        contact="043678000",
-        min_guests=50,
-        max_guests=500
-    )
-    add_venue(venue)
-    display_venue_details(venue.venue_id)
-
-    # ... (run tests for clients, events)
-
-
-if __name__ == "__main__":
-    run_tests()
-    # Run test case for client details
-    test_display_client_details()
