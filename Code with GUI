@@ -1,0 +1,395 @@
+import tkinter as tk
+from tkinter import messagebox
+import pickle
+from datetime import datetime
+
+# Base class for all employees
+class Employee:
+    def __init__(self, name, id_number, department, job_title, basic_salary, age, date_of_birth, passport_details):
+        self.name = name
+        self.id_number = id_number
+        self.department = department
+        self.job_title = job_title
+        self.basic_salary = basic_salary
+        self.age = age
+        self.date_of_birth = date_of_birth
+        self.passport_details = passport_details
+
+# Manager class inheriting from Employee
+class Manager(Employee):
+    def __init__(self, team_size, department_budget, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.team_size = team_size
+        self.department_budget = department_budget
+
+# Salesperson class inheriting from Employee
+class Salesperson(Employee):
+    def __init__(self, sales_target, commission_rate, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.sales_target = sales_target
+        self.commission_rate = commission_rate
+
+# Client class
+class Client:
+    def __init__(self, client_id, name, address, contact_details, budget):
+        self.client_id = client_id
+        self.name = name
+        self.address = address
+        self.contact_details = contact_details
+        self.budget = budget
+
+# Guest class
+class Guest:
+    def __init__(self, guest_id, name, address, contact_details):
+        self.guest_id = guest_id
+        self.name = name
+        self.address = address
+        self.contact_details = contact_details
+
+# Supplier class
+class Supplier:
+    def __init__(self, supplier_id, name, address, contact_details):
+        self.supplier_id = supplier_id
+        self.name = name
+        self.address = address
+        self.contact_details = contact_details
+
+# Venue class
+class Venue:
+    def __init__(self, venue_id, name, address, contact, min_guests, max_guests):
+        self.venue_id = venue_id
+        self.name = name
+        self.address = address
+        self.contact = contact
+        self.min_guests = min_guests
+        self.max_guests = max_guests
+
+# Event class
+class Event:
+    def __init__(self, event_id, event_type, theme, date, time, duration):
+        self.event_id = event_id
+        self.event_type = event_type
+        self.theme = theme
+        self.date = datetime.strptime(date, '%Y-%m-%d')
+        self.time = time
+        self.duration = duration
+        self.venue = None
+        self.client = None
+        self.guest_list = []
+        self.suppliers = []
+        self.invoice = None
+
+# Function to add an employee
+def add_employee(employee_data):
+    try:
+        with open('employees.pkl', 'ab') as file:
+            pickle.dump(employee_data, file)
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while adding an employee: {e}")
+
+# Function to display employee details by ID
+def display_employee_details(employee_id):
+    try:
+        with open('employees.pkl', 'rb') as file:
+            while True:
+                try:
+                    employee = pickle.load(file)
+                    if employee.id_number == employee_id:
+                        messagebox.showinfo("Employee Details", f"Name: {employee.name}\nDepartment: {employee.department}\nJob Title: {employee.job_title}\nBasic Salary: {employee.basic_salary}\nAge: {employee.age}\nDate of Birth: {employee.date_of_birth}\nPassport Details: {employee.passport_details}")
+                        return
+                except EOFError:
+                    break
+        messagebox.showinfo("Error", "Employee not found.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while retrieving employee details: {e}")
+
+# Function to delete an employee by ID
+def delete_employee(employee_id):
+    try:
+        with open('employees.pkl', 'rb') as file:
+            employees = []
+            while True:
+                try:
+                    employee = pickle.load(file)
+                    if employee.id_number != employee_id:
+                        employees.append(employee)
+                except EOFError:
+                    break
+        with open('employees.pkl', 'wb') as file:
+            for emp in employees:
+                pickle.dump(emp, file)
+        messagebox.showinfo("Success", "Employee deleted successfully.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while deleting employee: {e}")
+
+# Function to modify employee details by ID
+def modify_employee(employee_id, new_data):
+    try:
+        with open('employees.pkl', 'rb') as file:
+            employees = []
+            while True:
+                try:
+                    employee = pickle.load(file)
+                    if employee.id_number == employee_id:
+                        employee.__dict__.update(new_data)
+                    employees.append(employee)
+                except EOFError:
+                    break
+        with open('employees.pkl', 'wb') as file:
+            for emp in employees:
+                pickle.dump(emp, file)
+        messagebox.showinfo("Success", "Employee details modified successfully.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while modifying employee details: {e}")
+
+# Function to add a client
+def add_client(client_data):
+    try:
+        with open('clients.pkl', 'ab') as file:
+            pickle.dump(client_data, file)
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while adding a client: {e}")
+
+# Function to display client details by ID
+def display_client_details(client_id):
+    try:
+        with open('clients.pkl', 'rb') as file:
+            while True:
+                try:
+                    client = pickle.load(file)
+                    if client.client_id == client_id:
+                        messagebox.showinfo("Client Details", f"Name: {client.name}\nAddress: {client.address}\nContact Details: {client.contact_details}\nBudget: {client.budget}")
+                        return
+                except EOFError:
+                    break
+        messagebox.showinfo("Error", "Client not found.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while retrieving client details: {e}")
+
+# Function to delete a client by ID
+def delete_client(client_id):
+    try:
+        with open('clients.pkl', 'rb') as file:
+            clients = []
+            while True:
+                try:
+                    client = pickle.load(file)
+                    if client.client_id != client_id:
+                        clients.append(client)
+                except EOFError:
+                    break
+        with open('clients.pkl', 'wb') as file:
+            for cl in clients:
+                pickle.dump(cl, file)
+        messagebox.showinfo("Success", "Client deleted successfully.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while deleting client: {e}")
+
+# Function to modify client details by ID
+def modify_client(client_id, new_data):
+    try:
+        with open('clients.pkl', 'rb') as file:
+            clients = []
+            while True:
+                try:
+                    client = pickle.load(file)
+                    if client.client_id == client_id:
+                        client.__dict__.update(new_data)
+                    clients.append(client)
+                except EOFError:
+                    break
+        with open('clients.pkl', 'wb') as file:
+            for cl in clients:
+                pickle.dump(cl, file)
+        messagebox.showinfo("Success", "Client details modified successfully.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while modifying client details: {e}")
+
+# Function to add a supplier
+def add_supplier(supplier_data):
+    try:
+        with open('suppliers.pkl', 'ab') as file:
+            pickle.dump(supplier_data, file)
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while adding a supplier: {e}")
+
+# Function to display supplier details by ID
+def display_supplier_details(supplier_id):
+    try:
+        with open('suppliers.pkl', 'rb') as file:
+            while True:
+                try:
+                    supplier = pickle.load(file)
+                    if supplier.supplier_id == supplier_id:
+                        messagebox.showinfo("Supplier Details", f"Name: {supplier.name}\nAddress: {supplier.address}\nContact Details: {supplier.contact_details}")
+                        return
+                except EOFError:
+                    break
+        messagebox.showinfo("Error", "Supplier not found.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while retrieving supplier details: {e}")
+
+# Function to delete a supplier by ID
+def delete_supplier(supplier_id):
+    try:
+        with open('suppliers.pkl', 'rb') as file:
+            suppliers = []
+            while True:
+                try:
+                    supplier = pickle.load(file)
+                    if supplier.supplier_id != supplier_id:
+                        suppliers.append(supplier)
+                except EOFError:
+                    break
+        with open('suppliers.pkl', 'wb') as file:
+            for sup in suppliers:
+                pickle.dump(sup, file)
+        messagebox.showinfo("Success", "Supplier deleted successfully.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while deleting supplier: {e}")
+
+# Function to modify supplier details by ID
+def modify_supplier(supplier_id, new_data):
+    try:
+        with open('suppliers.pkl', 'rb') as file:
+            suppliers = []
+            while True:
+                try:
+                    supplier = pickle.load(file)
+                    if supplier.supplier_id == supplier_id:
+                        supplier.__dict__.update(new_data)
+                    suppliers.append(supplier)
+                except EOFError:
+                    break
+        with open('suppliers.pkl', 'wb') as file:
+            for sup in suppliers:
+                pickle.dump(sup, file)
+        messagebox.showinfo("Success", "Supplier details modified successfully.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while modifying supplier details: {e}")
+
+# Function to add a guest
+def add_guest(guest_data):
+    try:
+        with open('guests.pkl', 'ab') as file:
+            pickle.dump(guest_data, file)
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while adding a guest: {e}")
+
+# Function to display guest details by ID
+def display_guest_details(guest_id):
+    try:
+        with open('guests.pkl', 'rb') as file:
+            while True:
+                try:
+                    guest = pickle.load(file)
+                    if guest.guest_id == guest_id:
+                        messagebox.showinfo("Guest Details", f"Name: {guest.name}\nAddress: {guest.address}\nContact Details: {guest.contact_details}")
+                        return
+                except EOFError:
+                    break
+        messagebox.showinfo("Error", "Guest not found.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while retrieving guest details: {e}")
+
+# Function to delete a guest by ID
+def delete_guest(guest_id):
+    try:
+        with open('guests.pkl', 'rb') as file:
+            guests = []
+            while True:
+                try:
+                    guest = pickle.load(file)
+                    if guest.guest_id != guest_id:
+                        guests.append(guest)
+                except EOFError:
+                    break
+        with open('guests.pkl', 'wb') as file:
+            for g in guests:
+                pickle.dump(g, file)
+        messagebox.showinfo("Success", "Guest deleted successfully.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while deleting guest: {e}")
+
+# Function to modify guest details by ID
+def modify_guest(guest_id, new_data):
+    try:
+        with open('guests.pkl', 'rb') as file:
+            guests = []
+            while True:
+                try:
+                    guest = pickle.load(file)
+                    if guest.guest_id == guest_id:
+                        guest.__dict__.update(new_data)
+                    guests.append(guest)
+                except EOFError:
+                    break
+        with open('guests.pkl', 'wb') as file:
+            for g in guests:
+                pickle.dump(g, file)
+        messagebox.showinfo("Success", "Guest details modified successfully.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while modifying guest details: {e}")
+
+# Function to add a venue
+def add_venue(venue_data):
+    try:
+        with open('venues.pkl', 'ab') as file:
+            pickle.dump(venue_data, file)
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while adding a venue: {e}")
+
+# Function to display venue details by ID
+def display_venue_details(venue_id):
+    try:
+        with open('venues.pkl', 'rb') as file:
+            while True:
+                try:
+                    venue = pickle.load(file)
+                    if venue.venue_id == venue_id:
+                        messagebox.showinfo("Venue Details", f"Name: {venue.name}\nAddress: {venue.address}\nContact: {venue.contact}\nMin Guests: {venue.min_guests}\nMax Guests: {venue.max_guests}")
+                        return
+                except EOFError:
+                    break
+        messagebox.showinfo("Error", "Venue not found.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while retrieving venue details: {e}")
+
+# Function to delete a venue by ID
+def delete_venue(venue_id):
+    try:
+        with open('venues.pkl', 'rb') as file:
+            venues = []
+            while True:
+                try:
+                    venue = pickle.load(file)
+                    if venue.venue_id != venue_id:
+                        venues.append(venue)
+                except EOFError:
+                    break
+        with open('venues.pkl', 'wb') as file:
+            for v in venues:
+                pickle.dump(v, file)
+        messagebox.showinfo("Success", "Venue deleted successfully.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while deleting venue: {e}")
+
+# Function to modify venue details by ID
+def modify_venue(venue_id, new_data):
+    try:
+        with open('venues.pkl', 'rb') as file:
+            venues = []
+            while True:
+                try:
+                    venue = pickle.load(file)
+                    if venue.venue_id == venue_id:
+                        venue.__dict__.update(new_data)
+                    venues.append(venue)
+                except EOFError:
+                    break
+        with open('venues.pkl', 'wb') as file:
+            for v in venues:
+                pickle.dump(v, file)
+        messagebox.showinfo("Success", "Venue details modified successfully.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred while modifying venue details: {e}")
